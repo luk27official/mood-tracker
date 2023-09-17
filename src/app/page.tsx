@@ -1,21 +1,30 @@
 'use client';
 
-import { login, register } from "./userLogic";
+import { checkSession, login, register } from "./userLogic";
 import { useState } from "react";
 
-export default function Home() {
+export default async function Home() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    console.log('login')
-    login({ username, password });
-  }
+  const [loggedUser, setLoggedUser] = useState('');
 
-  const handleRegister = () => {
-    console.log('register')
-    register({ username, password });
-  }
+  const handleLogin = async () => {
+    console.log('login');
+    await login({ username, password });
+    await handleCheckSession();
+  };
+
+  const handleRegister = async () => {
+    console.log('register');
+    await register({ username, password });
+  };
+
+  const handleCheckSession = async () => {
+    console.log('check session');
+    const user = await checkSession();
+    setLoggedUser(user);
+  };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -46,7 +55,7 @@ export default function Home() {
             type="button"
             onClick={handleLogin}
           >
-            Sign In
+            Login
           </button>
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4 ml-4"
@@ -57,6 +66,11 @@ export default function Home() {
           </button>
         </form>
       </div>
+      <div>
+        <p className="text-gray-700 text-sm font-bold mb-2 mt-4">
+          {loggedUser && `Logged in as ${loggedUser}` || 'No user logged in'}
+        </p>
+      </div>
     </main>
-  )
+  );
 }
