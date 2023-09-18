@@ -1,29 +1,21 @@
 'use client';
 
-import { checkSession, login, register } from "./userLogic";
+import { login, register } from "./userLogic";
 import { useState } from "react";
+import { useRouter } from 'next/navigation';
 
-export default async function Home() {
+export default function Home() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
-  const [loggedUser, setLoggedUser] = useState('');
+  const router = useRouter();
 
   const handleLogin = async () => {
-    console.log('login');
     await login({ username, password });
-    await handleCheckSession();
+    router.push('/createMoodReport');
   };
 
   const handleRegister = async () => {
-    console.log('register');
     await register({ username, password });
-  };
-
-  const handleCheckSession = async () => {
-    console.log('check session');
-    const user = await checkSession();
-    setLoggedUser(user);
   };
 
   return (
@@ -65,11 +57,6 @@ export default async function Home() {
             Register
           </button>
         </form>
-      </div>
-      <div>
-        <p className="text-gray-700 text-sm font-bold mb-2 mt-4">
-          {loggedUser && `Logged in as ${loggedUser}` || 'No user logged in'}
-        </p>
       </div>
     </main>
   );

@@ -9,10 +9,16 @@ export default async function handle(
         return res.status(405).json({ message: 'Method not allowed' });
     }
 
+    const token = req.body.token;
+
+    if (token == undefined) {
+        return res.status(401).json({ message: 'Unauthorized' });
+    }
+
     const result = await prisma.loginToken.findFirst({
         where: {
-            token: req.body.token
-        },
+            token: token
+        }
     });
 
     if (result) {

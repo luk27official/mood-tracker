@@ -1,12 +1,12 @@
+'use client';
+
 export type User = {
     username: string;
     password: string;
-}
+};
 
 export const register = async (user: User) => {
     // register user
-    console.log(user);
-
     await fetch('/api/registerUser', {
         method: 'POST',
         body: JSON.stringify(user),
@@ -18,12 +18,10 @@ export const register = async (user: User) => {
     }).catch((err) => {
         console.log(err);
     });
-}
+};
 
 export const login = async (user: User) => {
     // login user
-    console.log(user);
-
     const session = await fetch('/api/loginUser', {
         method: 'POST',
         body: JSON.stringify(user),
@@ -31,19 +29,23 @@ export const login = async (user: User) => {
             'Content-Type': 'application/json'
         }
     }).then((res) => {
-        console.log(res);
+        if (res.status == 401) {
+            console.log("fail");
+            return;
+        }
         return res.json();
     }).catch((err) => {
         console.log(err);
     });
 
-    localStorage.setItem('session', JSON.stringify(session));
-}
+    if (!session) localStorage.setItem('session', '{}');
+    else localStorage.setItem('session', JSON.stringify(session));
+};
 
 export const checkSession = async () => {
     // check session
+    if (typeof window == 'undefined') return;
     const session = JSON.parse(localStorage.getItem('session') as string);
-    console.log(session);
 
     if (session) {
         const result = await fetch('/api/checkSession', {
@@ -53,13 +55,14 @@ export const checkSession = async () => {
                 'Content-Type': 'application/json'
             }
         }).then((res) => {
-            console.log(res);
+            if (res.status == 401) {
+                return null;
+            }
             return res.json();
         }).catch((err) => {
             console.log(err);
         });
 
-        console.log(result);
         return result;
     }
-}
+};
