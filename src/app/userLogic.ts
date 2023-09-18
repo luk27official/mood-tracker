@@ -7,17 +7,22 @@ export type User = {
 
 export const register = async (user: User) => {
     // register user
-    await fetch('/api/registerUser', {
+    const registration = await fetch('/api/registerUser', {
         method: 'POST',
         body: JSON.stringify(user),
         headers: {
             'Content-Type': 'application/json'
         }
     }).then((res) => {
-        console.log(res);
+        if (res.status == 201) {
+            return true;
+        }
+        return false;
     }).catch((err) => {
         console.log(err);
     });
+
+    return registration;
 };
 
 export const login = async (user: User) => {

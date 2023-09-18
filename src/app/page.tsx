@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 export default function Home() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
   const router = useRouter();
 
   const handleLogin = async () => {
@@ -15,7 +16,9 @@ export default function Home() {
   };
 
   const handleRegister = async () => {
-    await register({ username, password });
+    const resp = await register({ username, password });
+    if (resp) setMessage("User created successfully.");
+    else setMessage("User already exists or another error occured.");
   };
 
   return (
@@ -57,6 +60,9 @@ export default function Home() {
             Register
           </button>
         </form>
+        <p className="text-black text-xs italic mt-4">
+          {message}
+        </p>
       </div>
     </main>
   );
