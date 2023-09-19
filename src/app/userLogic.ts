@@ -1,9 +1,6 @@
 'use client';
 
-export type User = {
-    username: string;
-    password: string;
-};
+import { User } from "./customTypes";
 
 export const register = async (user: User) => {
     // register user
@@ -70,4 +67,48 @@ export const checkSession = async () => {
 
         return result;
     }
+};
+
+export const submitReport = async (token: string, mood: number, date: string, comment: string, anythingNew: string) => {
+    return await fetch('/api/uploadReport', {
+        method: 'POST',
+        body: JSON.stringify({
+            token: token,
+            mood: mood,
+            date: date,
+            comment: comment,
+            anythingNew: anythingNew
+        }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then((res) => {
+        return res.json();
+    }).catch((err) => {
+        console.log(err);
+        return null;
+    });
+};
+
+export const getAllReportsServer = async () => {
+    if (typeof window == 'undefined') return;
+    const session = JSON.parse(localStorage.getItem('session') as string);
+    return await getAllReports(session.token);
+};
+
+export const getAllReports = async (token: string) => {
+    return await fetch('/api/getAllReports', {
+        method: 'POST',
+        body: JSON.stringify({
+            token: token
+        }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then((res) => {
+        return res.json();
+    }).catch((err) => {
+        console.log(err);
+        return null;
+    });
 };

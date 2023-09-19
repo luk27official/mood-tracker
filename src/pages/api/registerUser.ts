@@ -7,17 +7,20 @@ export default async function handle(
     req: NextApiRequest,
     res: NextApiResponse,
 ) {
-    if (req.method !== 'POST') {
+    if (req.method !== 'POST' || req.headers['content-type'] !== 'application/json') {
         return res.status(405).json({ message: 'Method not allowed' });
     }
 
-    if (req.body.username == undefined || req.body.password == undefined) {
+    //const parsedBody = JSON.parse(req.body);
+    const parsedBody = req.body;
+
+    if (parsedBody.username == undefined || parsedBody.password == undefined) {
         return res.status(400).json({ message: 'Bad request' });
     }
 
     const userExists = await prisma.user.findFirst({
         where: {
-            username: req.body.username
+            username: parsedBody.username
         },
     });
 
@@ -27,7 +30,7 @@ export default async function handle(
 
     const result = await prisma.user.create({
         data: {
-            ...req.body,
+            ...parsedBody,
         },
     });
     console.log(`New user registered, ${result.id}, ${result.username}, ${result.password}`);

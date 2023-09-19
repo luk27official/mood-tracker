@@ -23,22 +23,23 @@ export default async function handle(
         }
     });
 
-    if (result) {
-        console.log(`Session found, ${result.id}, ${result.token}, ${result.userId}`);
-
-        const user = await prisma.user.findFirst({
-            where: {
-                id: result.userId
-            },
-        });
-
-        if (!user) {
-            return res.status(401).json({ message: 'Unauthorized' });
-        }
-
-        console.log(`User found, ${user.id}, ${user.username}, ${user.password}`);
-        return res.status(201).json(user.username);
+    if (!result) {
+        return res.status(401).json({ message: 'Unauthorized' });
     }
 
-    return res.status(401).json({ message: 'Unauthorized' });
-}
+    console.log(`Session found, ${result.id}, ${result.token}, ${result.userId}`);
+
+    const reports = await prisma.moodReport.findMany({
+        where: {
+            userId: result.userId
+        }
+    });
+
+    if (!reports) {
+        return res.status(201).json({});
+    }
+
+    console.log(`Reports found, ${reports.length}`);
+
+    return res.status(201).json(reports);
+};

@@ -1,5 +1,5 @@
-export const getDayBefore = (numberDate: number) => {
-    const date = new Date(numberDate);
+export const getDayBefore = (timestamp: number) => {
+    const date = new Date(timestamp);
     date.setDate(date.getDate() - 1);
     const day = date.getDate();
     const month = date.getMonth() + 1;

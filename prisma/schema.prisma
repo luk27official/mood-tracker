@@ -15,6 +15,7 @@ model User {
   username   String       @unique
   password   String
   LoginToken LoginToken[]
+  MoodReport MoodReport[]
 }
 
 model LoginToken {
@@ -22,4 +23,14 @@ model LoginToken {
   token  String @unique
   user   User   @relation(fields: [userId], references: [id])
   userId Int
+}
+
+model MoodReport {
+  id          Int      @id @default(autoincrement())
+  mood        Int
+  date        DateTime
+  user        User     @relation(fields: [userId], references: [id])
+  userId      Int
+  comment     String
+  anythingNew String
 }

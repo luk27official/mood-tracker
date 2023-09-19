@@ -1,20 +1,24 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '@/prisma'
+import type { NextApiRequest, NextApiResponse } from 'next';
+import prisma from '@/prisma';
 import { randomBytes } from 'crypto';
 
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  if (req.method !== 'POST') {
+  if (req.method !== 'POST' || req.headers['content-type'] !== 'application/json') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
+
+  //const parsedBody = JSON.parse(req.body);
+  const parsedBody = req.body;
+
   const result = await prisma.user.findFirst({
     where: {
-      username: req.body.username,
-      password: req.body.password
+      username: parsedBody.username,
+      password: parsedBody.password
     },
-  })
+  });
 
   if (result) {
     console.log(`User logged in, ${result.id}, ${result.username}, ${result.password}`);
