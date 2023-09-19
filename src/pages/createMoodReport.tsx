@@ -6,9 +6,9 @@ import Image from 'next/image';
 import { useMemo, useState } from "react";
 import { getDayBefore, getTodayDate } from '@/app/dateLogic';
 import { Report } from '@/app/customTypes';
+import { useRouter } from 'next/navigation';
 
 export default function CreateMoodReport() {
-
     const [username, setUsername] = useState('');
     const [isInvalid, setIsInvalid] = useState(false);
     const [isDone, setIsDone] = useState(false);
@@ -19,12 +19,7 @@ export default function CreateMoodReport() {
     const [anythingNew, setAnythingNew] = useState('');
 
     const [submitStatus, setSubmitStatus] = useState('');
-
-    const handleListReports = async () => {
-        const session = JSON.parse(localStorage.getItem('session') as string);
-        const list = await getAllReports(session.token);
-        console.log(list);
-    };
+    const router = useRouter();
 
     useMemo(async () => {
         const user = await checkSession();
@@ -49,6 +44,10 @@ export default function CreateMoodReport() {
         });
 
     }, []);
+
+    const handleListReports = async () => {
+        router.push('/listMoodReports');
+    };
 
     if (isInvalid) return (
         <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -110,7 +109,6 @@ export default function CreateMoodReport() {
             <div className="justify-center text-center">
                 <span className="text-2xl font-bold mb-2">How are you feeling today, {username}?</span>
                 <form>
-                    <span className="text-xl font-bold">Date</span>
                     Today, it is {date} (or too early the day after).<br />
                     <span onClick={() => { handleChangeDate(); }} className="underline">Change to the day before</span><br />
                     <span onClick={() => { setDate(getTodayDate()); }} className="underline">Change to today</span>
@@ -120,9 +118,9 @@ export default function CreateMoodReport() {
                             <Image src={`/${imageName}.svg`} width={64} height={64} alt={imageName.toString()} key={imageName} onClick={(e) => handleMoodClick(imageName)} className={(mood === imageName) ? "border-double border-4 border-sky-500" : "none"} />
                         ))}
                     </div>
-                    <span className="text-xl font-bold">Comment</span>
+                    <h3 className="text-xl font-bold">Comment</h3>
                     <textarea className="border-2 border-gray-300 rounded-md p-2 w-full h-60" id="comment" onChange={(e) => handleCommentChange(e)} />
-                    <span className="text-xl font-bold">Did you learn anything new today?</span>
+                    <h3 className="text-xl font-bold">Did you learn anything new today?</h3>
                     <textarea className="border-2 border-gray-300 rounded-md p-2 w-full h-36" id="anythingNew" onChange={(e) => handleAnythingNewChange(e)} />
                     <button
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-4"
