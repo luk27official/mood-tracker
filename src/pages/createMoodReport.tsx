@@ -137,6 +137,7 @@ export default function CreateMoodReport() {
                         List my reports
                     </button>
                     <p className="text-xl mt-4">{submitStatus}</p>
+                    <p className="text-opacity-75">Mood icons <a href="https://www.freepik.com/free-vector/emoji-satisfaction-meter-small_44156211.htm#query=satisfaction%20smile&position=0&from_view=keyword&track=ais">by juicy_fish</a> on Freepik</p>
                 </form>
             </div>
         </main>
