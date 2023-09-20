@@ -110,8 +110,8 @@ export default function CreateMoodReport() {
                 <span className="text-2xl font-bold mb-2">How are you feeling today, {username}?</span>
                 <form>
                     Today, it is {date} (or too early the day after).<br />
-                    <span onClick={() => { handleChangeDate(); }} className="underline">Change to the day before</span><br />
-                    <span onClick={() => { setDate(getTodayDate()); }} className="underline">Change to today</span>
+                    <span onClick={() => { handleChangeDate(); }} className="underline cursor-pointer">Change to the day before</span><br />
+                    <span onClick={() => { setDate(getTodayDate()); }} className="underline cursor-pointer">Change to today</span>
                     <h3 className="text-xl font-bold">Mood</h3>
                     <div className="flex flex-row justify-center gap-3">
                         {imageNames.map((imageName) => (
