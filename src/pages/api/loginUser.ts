@@ -15,6 +15,7 @@ export default async function handle(
 
   const result = await prisma.user.findFirst({
     where: {
+      // similar to the registerUser.ts - there is no hashing of the password right now.
       username: parsedBody.username,
       password: parsedBody.password
     },

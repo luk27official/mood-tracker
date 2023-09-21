@@ -2,9 +2,15 @@
 
 This is a simple Next.js application used to track mood of the users.
 
-For local development, use `docker-compose up -d postgres` to fire up the Postgres DB and `npm run dev` to run the environment. Do not forget to include the `.env` file with the following to connect the DB: `DATABASE_URL="postgresql://postgres:postgres@localhost:5432/postgres?schema=public"`.
+Local development:
+1. `docker-compose up -d postgres` to fire up the Postgres DB
+2. `npm i` to install the NPM packages
+3. create an `.env` file with the following to connect the DB: `DATABASE_URL="postgresql://postgres:postgres@localhost:5432/postgres?schema=public"`
+4. `npx prisma generate && npx prisma db push` to initialize the DB
+5. `npm run dev` to run the environment
 
-To run the production build, use `docker-compose up`.
+Production build:
+1. `docker-compose up`
 
 Original README follows.
 

@@ -30,7 +30,10 @@ export default async function handle(
 
     const result = await prisma.user.create({
         data: {
-            ...parsedBody,
+            // watch out that passwords should be hashed and not stored in plaintext. as long as there is no sensitive data and no password requirements,
+            // no hashing is currently done, moreover - rainbow tables exist.
+            username: parsedBody.username,
+            password: parsedBody.password
         },
     });
     console.log(`New user registered, ${result.id}, ${result.username}, ${result.password}`);
