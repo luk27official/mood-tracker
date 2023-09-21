@@ -1,3 +1,15 @@
+# Mood Tracker by luk27
+
+This is a simple Next.js application used to track mood of the users.
+
+For local development, use `docker-compose up -d postgres` to fire up the Postgres DB and `npm run dev` to run the environment. Do not forget to include the `.env` file with the following to connect the DB: `DATABASE_URL="postgresql://postgres:postgres@localhost:5432/postgres?schema=public"`.
+
+To run the production build, use `docker-compose up`.
+
+Original README follows.
+
+---
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
