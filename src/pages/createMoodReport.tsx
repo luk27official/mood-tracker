@@ -52,6 +52,7 @@ export default function CreateMoodReport() {
     if (isInvalid) return (
         <main className="flex min-h-screen flex-col items-center justify-between p-24">
             <span className="text-xl font-bold">Wrong credentials.</span>
+            <a href="/">Go back to login</a>
         </main>
     );
 

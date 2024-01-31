@@ -11,11 +11,19 @@ export default function Home() {
   const router = useRouter();
 
   const handleLogin = async () => {
+    if (!username || !password) {
+      setMessage("Please fill in both username and password.");
+      return;
+    }
     await login({ username, password });
     router.push('/createMoodReport');
   };
 
   const handleRegister = async () => {
+    if (!username || !password) {
+      setMessage("Please fill in both username and password.");
+      return;
+    }
     const resp = await register({ username, password });
     if (resp) setMessage("User created successfully.");
     else setMessage("User already exists or another error occured.");
