@@ -12,7 +12,7 @@ export const getTodayDate = () => {
     // If it's before 6am, it's still yesterday
     const hours = today.getHours();
     if (hours < 6) {
-        return getDayBefore(today.getMilliseconds());
+        return getDayBefore(Date.now());
     }
 
     const day = today.getDate();
