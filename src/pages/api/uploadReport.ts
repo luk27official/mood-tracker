@@ -35,10 +35,17 @@ export default async function handle(
         return res.status(400).json({ message: 'Bad request' });
     }
 
+    const date = new Date();
+
+    // If it's before 6am, it's still yesterday
+    if (date.getHours() < 6) {
+        date.setDate(date.getDate() - 1);
+    }
+
     const report = await prisma.moodReport.create({
         data: {
             userId: result.userId,
-            date: new Date(),
+            date: date,
             mood: parsedBody.mood,
             comment: parsedBody.comment ? parsedBody.comment : '',
             anythingNew: parsedBody.anythingNew ? parsedBody.anythingNew : ''
