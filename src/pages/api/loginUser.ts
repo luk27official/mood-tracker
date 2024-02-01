@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/prisma';
 import { randomBytes } from 'crypto';
+import { hashPassword } from "@/app/passHash";
 
 export default async function handle(
   req: NextApiRequest,
@@ -13,11 +14,27 @@ export default async function handle(
   //const parsedBody = JSON.parse(req.body);
   const parsedBody = req.body;
 
+  const user = await prisma.user.findFirst({
+    where: {
+      username: parsedBody.username
+    },
+  });
+
+  if (!user) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
+  const salt = user.salt;
+  const hashedPass = hashPassword(parsedBody.password, salt);
+
+  if (!hashedPass) {
+    return res.status(500).json({ message: 'Internal error' });
+  }
+
   const result = await prisma.user.findFirst({
     where: {
-      // similar to the registerUser.ts - there is no hashing of the password right now.
       username: parsedBody.username,
-      password: parsedBody.password
+      password: hashedPass
     },
   });
 
