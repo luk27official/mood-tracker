@@ -1,2 +1,2 @@
 -- AlterTable
-ALTER TABLE "User" ALTER COLUMN "salt" SET DEFAULT 'default';
+ALTER TABLE "User" ADD COLUMN "salt" TEXT NOT NULL DEFAULT 'default';
